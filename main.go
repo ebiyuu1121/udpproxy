@@ -73,13 +73,14 @@ func main() {
 	for {
 		b := make([]byte, opts.Buffer)
 		n, addr, err := sourceConn.ReadFromUDP(b)
+        _ = addr
 
 		if err != nil {
 			log.WithError(err).Error("Could not receive a packet")
 			continue
 		}
 
-		log.WithField("addr", addr.String()).WithField("bytes", n).WithField("content", string(b)).Info("Packet received")
+		//log.WithField("addr", addr.String()).WithField("bytes", n).WithField("content", string(b)).Info("Packet received")
 		for _, v := range targetConn {
 			if _, err := v.Write(b[0:n]); err != nil {
 				log.WithError(err).Warn("Could not forward packet.")
